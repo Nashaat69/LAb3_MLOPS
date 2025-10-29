@@ -1,0 +1,26 @@
+stages:
+  preprocess:
+    cmd: conda run -n ml-env python preprocess.py
+    deps:
+      - preprocess.py
+    outs:
+      - data/data_raw.csv
+      - data/train.csv
+      - data/test.csv
+
+  train:
+    cmd: conda run -n ml-env python train.py
+    deps:
+      - train.py
+      - data/train.csv
+    outs:
+      - models/model.pkl
+
+  tune:
+    cmd: conda run -n ml-env python tune.py
+    deps:
+      - tune.py
+      - data/train.csv
+      - data/test.csv
+    outs:
+      - models/best_model.pkl
